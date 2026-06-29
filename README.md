@@ -1,20 +1,16 @@
-Run:
-```bash
-python src/pipeline/alerts_pipeline.py
-```
+## Known Gaps & Future Improvements
 
-## Known gaps / next steps
+* The anomaly detectors currently operate on simulated trading data. In a production environment, trade events would be ingested from a real-time streaming platform such as Apache Kafka or a database change data capture (CDC) pipeline.
+* The `detect_rapid_trading()` function uses an O(n²) sliding-window approach for each trader. While suitable for this project's dataset, a production-scale implementation would require a more efficient algorithm to process millions of trade events with low latency.
+* Alerts are persisted in the database, but there is no automated notification layer. A production-ready system could integrate with Slack, Microsoft Teams, email, or PagerDuty to notify compliance teams in real time.
+* Detection thresholds (e.g., lot size, trading window, and rapid-trade limits) are currently hardcoded. A production implementation would store these as configurable business rules that can be adjusted per instrument, account type, or risk policy without modifying the codebase.
 
-- Detectors run on simulated data — in production, events would come from a real-time trade stream (Kafka or a database change feed)
-- `detect_rapid_trading()` uses an O(n²) per-trader window scan — acceptable for this scale, would need optimization for millions of events
-- No alerting/notification layer yet — alerts exist in the database but nothing pings the compliance team automatically
-- Thresholds (lot size > 10, window = 10 minutes, streak = 5) are hardcoded — a production system would make these configurable per instrument
+## Business Value
 
-## Business value
-
-This pipeline is the foundation of a risk monitoring system. For a broker like PuPrime, catching an overleveraged position early prevents both client losses and potential regulatory liability. The queryable alerts table means compliance teams can filter, audit, and report on flagged activity without touching raw trade data.
+This project demonstrates how a data engineering pipeline can support automated trading surveillance and risk monitoring within a brokerage environment. By identifying suspicious trading patterns early, the system helps reduce financial risk, improve regulatory compliance, and provide compliance teams with a centralized, queryable alerts repository for investigation, auditing, and reporting.
 
 ## Author
 
-Matthew James — Data Engineer
+**Matthew James**
+**Data Engineer | Python | SQL | ETL | Data Pipelines**
 GitHub: github.com/matthewoke94
